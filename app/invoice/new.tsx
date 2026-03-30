@@ -88,6 +88,7 @@ export default function NewInvoiceScreen() {
     return {
       invoiceNumber: String(invoiceNumber).trim(),
       title: String(title || ''),
+      createdAt: new Date().toISOString(),
       from: {
         name: String(fromName).trim(),
         addressLines: [fromAddress1, fromAddress2, fromAddress3].map((s) => String(s || '').trim()).filter(Boolean),

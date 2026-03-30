@@ -7,6 +7,7 @@ type InvoicePreviewInput = Pick<
   | 'invoiceNumber'
   | 'title'
   | 'from'
+  | 'createdAt'
   | 'billing'
   | 'items'
   | 'payment'
@@ -19,6 +20,13 @@ type InvoicePreviewInput = Pick<
 
 const LOGO = require('../assets/images/Arctic_Base_logo_Black.png');
 const SIGNATURE = require('../assets/images/Ronit_signature.png');
+
+function formatDate(iso?: string) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  return d.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
 
 export default function InvoiceA4Preview({ invoice }: { invoice: InvoicePreviewInput }) {
   const { frameW, frameH, scale, baseW, baseH } = useMemo(() => {
@@ -44,6 +52,7 @@ export default function InvoiceA4Preview({ invoice }: { invoice: InvoicePreviewI
   const fromGst = invoice.from?.gst || '';
 
   const items: InvoiceLineItem[] = invoice.items || [];
+  const dateText = formatDate(invoice.createdAt);
 
   return (
     <View className="bg-[#f3f4f6] rounded-[18px] p-3 items-center">
@@ -81,10 +90,17 @@ export default function InvoiceA4Preview({ invoice }: { invoice: InvoicePreviewI
                 <Text style={{ fontSize: 24, color: '#000', fontWeight: '500' }}>
                   {invoice.title || ''}
                 </Text>
-                <Text style={{ fontSize: 24, color: '#6B7280', fontWeight: '600' }}>
-                  <Text style={{ fontWeight: '800', color: '#374151' }}>INVOICE </Text>
-                  {invoice.invoiceNumber}
-                </Text>
+                <View style={{ alignItems: 'flex-end' }}>
+                  <Text style={{ fontSize: 24, color: '#6B7280', fontWeight: '600' }}>
+                    <Text style={{ fontWeight: '800', color: '#374151' }}>INVOICE </Text>
+                    {invoice.invoiceNumber}
+                  </Text>
+                  {dateText ? (
+                    <Text style={{ marginTop: 4, fontSize: 14, color: '#6B7280', fontWeight: '500' }}>
+                      Date: {dateText}
+                    </Text>
+                  ) : null}
+                </View>
               </View>
             </View>
 

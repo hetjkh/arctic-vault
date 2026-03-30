@@ -92,6 +92,7 @@ export default function EditInvoiceScreen() {
       invoiceNumber: inv.invoiceNumber,
       title: String(title || ''),
       from: inv.from,
+      createdAt: inv.createdAt,
       billing: {
         name: String(billingName || ''),
         address: String(billingAddress || ''),

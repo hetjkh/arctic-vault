@@ -9,6 +9,7 @@ type InvoicePdfInput = Pick<
   | 'invoiceNumber'
   | 'title'
   | 'from'
+  | 'createdAt'
   | 'billing'
   | 'items'
   | 'payment'
@@ -113,6 +114,11 @@ async function buildInvoiceHtml(inv: InvoicePdfInput) {
   const tax = Number(inv.tax) || 0;
   const total = Number(inv.total) || 0;
   const fromLines: string[] = Array.isArray(from.addressLines) ? from.addressLines : [];
+  const dateObj = inv.createdAt ? new Date(inv.createdAt) : new Date();
+  const dateText =
+    Number.isNaN(dateObj.getTime())
+      ? ''
+      : dateObj.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
   return `<!doctype html>
 <html>
@@ -189,6 +195,17 @@ async function buildInvoiceHtml(inv: InvoicePdfInput) {
         font-size: 24px;
         color: #6B7280;
         font-weight: 600;
+      }
+      .inv-meta {
+        display:flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 4px;
+      }
+      .inv-date {
+        font-size: 14px;
+        color: #6B7280;
+        font-weight: 500;
       }
       .section {
         padding: 0 48px;
@@ -297,7 +314,10 @@ async function buildInvoiceHtml(inv: InvoicePdfInput) {
           </div>
           <div class="title-row" style="margin-top: 18px;">
             <div class="title">${escapeHtml(inv.title || '')}</div>
-            <div class="inv-num"><span style="font-weight:700;">INVOICE</span> ${escapeHtml(inv.invoiceNumber || '')}</div>
+            <div class="inv-meta">
+              <div class="inv-num"><span style="font-weight:700;">INVOICE</span> ${escapeHtml(inv.invoiceNumber || '')}</div>
+              ${dateText ? `<div class="inv-date">Date: ${escapeHtml(dateText)}</div>` : ''}
+            </div>
           </div>
         </div>
       </div>
