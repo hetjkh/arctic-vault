@@ -2,7 +2,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { Tabs } from 'expo-router';
 // Expo SDK 54 Native Tabs Imports
-import { NativeTabs, Icon, Label } from 'expo-router/unstable-native-tabs';
+import { NativeTabs, Icon } from 'expo-router/unstable-native-tabs';
 
 import { CustomTabBar } from '../../components/CustomTabBar';
 import Constants from 'expo-constants';
@@ -20,6 +20,7 @@ function StandardTabsLayout() {
       <Tabs.Screen name="index" />
       <Tabs.Screen name="transactions" />
       <Tabs.Screen name="add" />
+      <Tabs.Screen name="invoices" />
       <Tabs.Screen name="analytics" />
     </Tabs>
   );
@@ -39,18 +40,17 @@ function IOSNativeTabsLayout() {
         <Icon sf="arrow.left.arrow.right" />
       </NativeTabs.Trigger>
 
-      <NativeTabs.Trigger name="analytics">
-        <Icon sf="chart.pie.fill" />
+      {/* Center "+" tab */}
+      <NativeTabs.Trigger name="add">
+        <Icon sf="plus" />
       </NativeTabs.Trigger>
 
-      {/* 
-        This utilizes Apple's exact UITabBar "Separate Search Tab" functionality. 
-        Applying role="search" natively detaches this button from the central 
-        pill array and visually mounts it separately on the right side.
-      */}
-      <NativeTabs.Trigger name="add" role="search">
-        <Icon sf="plus" />
-        <Label>Add</Label>
+      <NativeTabs.Trigger name="invoices">
+        <Icon sf="doc.text.fill" />
+      </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="analytics">
+        <Icon sf="chart.pie.fill" />
       </NativeTabs.Trigger>
 
     </NativeTabs>

@@ -116,7 +116,7 @@ export function formatCompact(amount: number): string {
 }
 
 // Global Singleton Math Engine guaranteeing 100% parity across ALL tabs
-export function useAppAnalytics(data: any, user?: any) {
+export function calcAppAnalytics(data: any, user?: any) {
   if (!data) return null;
   const tx = data.transactions || [];
   const users = data.users || [];

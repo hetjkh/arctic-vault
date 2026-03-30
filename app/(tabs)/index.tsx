@@ -8,7 +8,7 @@ import Animated, { Easing, FadeInDown, LinearTransition, SlideInUp, SlideOutDown
 import { AnimatedPressable } from '../../components/AnimatedPressable';
 import { DetailsSheet, SheetConfig } from '../../components/DetailsSheet';
 import { apiFetch, getStoredUser } from '../../lib/api';
-import { formatCompact, formatCurrency, useAppAnalytics } from '../../lib/calculations';
+import { formatCompact, formatCurrency, calcAppAnalytics } from '../../lib/calculations';
 import { DBData, SessionUser } from '../../types';
 
 // Safely mount native video player at module level
@@ -82,7 +82,7 @@ export default function DashboardScreen() {
 
   useEffect(() => { loadData(); }, [router]);
 
-  const derived = useMemo(() => useAppAnalytics(data, user), [data, user]);
+  const derived = useMemo(() => calcAppAnalytics(data, user), [data, user]);
 
   if (loading || !data || !user || !derived) {
     return (

@@ -3,7 +3,7 @@ import { View, Text, ScrollView, ActivityIndicator, RefreshControl } from 'react
 import { apiFetch } from '../../lib/api';
 import { BlurView } from 'expo-blur';
 import Animated, { FadeInDown, LinearTransition } from 'react-native-reanimated';
-import { useAppAnalytics, formatCurrency } from '../../lib/calculations';
+import { calcAppAnalytics, formatCurrency } from '../../lib/calculations';
 import { AlertCircle, TrendingUp, TrendingDown, Flame, CheckCircle2, Zap } from 'lucide-react-native';
 
 export default function AnalyticsScreen() {
@@ -20,7 +20,7 @@ export default function AnalyticsScreen() {
 
   useEffect(() => { loadData(); }, []);
 
-  const globalDerived = useAppAnalytics(data);
+  const globalDerived = calcAppAnalytics(data);
 
   const derived = useMemo(() => {
     if (!globalDerived || !data) return null;

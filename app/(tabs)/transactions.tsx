@@ -7,7 +7,7 @@ import { TransactionItem } from '../../components/TransactionItem';
 import { AnimatedPressable } from '../../components/AnimatedPressable';
 import { Banknote, ArrowDownToLine, X, Plus } from 'lucide-react-native';
 
-import { useAppAnalytics, formatCurrency, formatCompact } from '../../lib/calculations';
+import { calcAppAnalytics, formatCurrency, formatCompact } from '../../lib/calculations';
 import { DetailsSheet, SheetConfig } from '../../components/DetailsSheet';
 
 export default function TransactionsScreen() {
@@ -21,7 +21,7 @@ export default function TransactionsScreen() {
   const [page, setPage] = useState(1);
   const [globalData, setGlobalData] = useState<any>(null);
   const [sheet, setSheet] = useState<SheetConfig>({ visible: false, title: '', items: [] });
-  const derived = useMemo(() => useAppAnalytics(globalData), [globalData]);
+  const derived = useMemo(() => calcAppAnalytics(globalData), [globalData]);
 
   const screenWidth = Dimensions.get('window').width;
 
@@ -41,7 +41,7 @@ export default function TransactionsScreen() {
       setUsersMap(nextUsersMap);
       setUsersList(nextUsersList);
 
-      // We load arbitrary unpaginated transaction history linking the unified useAppAnalytics Engine natively globally avoiding fragmented bounds.
+      // We load arbitrary unpaginated transaction history linking the unified calcAppAnalytics engine globally.
       const balRes = await apiFetch('/api/transactions?limit=1000');
       setGlobalData({ users: usersData, transactions: balRes.items });
     } catch (e) {

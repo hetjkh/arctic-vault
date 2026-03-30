@@ -22,16 +22,66 @@ export interface Transaction {
   invoiceId?: string; // if auto-created from invoice payment
 }
 
-export interface Invoice {
+export interface InvoiceLineItem {
+  product: string;
+  description?: string;
+  quantity: number;
+  price: number;
+}
+
+export interface InvoiceFrom {
+  name: string;
+  addressLines: string[];
+  phone?: string;
+  email?: string;
+  gst?: string;
+}
+
+export interface InvoiceBilling {
+  name: string;
+  address?: string;
+  tradeLicense?: string;
+  phone?: string;
+}
+
+export interface InvoicePayment {
+  holder?: string;
+  accountNumber?: string;
+  bank?: string;
+  ifsc?: string;
+  swift?: string;
+  mobile?: string;
+}
+
+export interface InvoiceDocument {
   id: string;
-  clientName: string;
-  description: string;
-  amount: number;
+  invoiceNumber: string;
+  title: string;
+  from: InvoiceFrom;
+  billing: InvoiceBilling;
+  items: InvoiceLineItem[];
+  payment: InvoicePayment;
+  subtotal: number;
+  tax: number;
+  total: number;
+  currency: string;
   type: InvoiceType;
   status: InvoiceStatus;
   createdAt: string;
+  updatedAt?: string;
   paidAt?: string;
 }
+
+export type InvoiceCreateInput = Omit<
+  InvoiceDocument,
+  'id' | 'createdAt' | 'updatedAt' | 'paidAt' | 'status'
+> & {
+  status?: never;
+};
+
+export type InvoiceUpdateInput = Partial<InvoiceCreateInput> & {
+  status?: InvoiceStatus;
+};
 
 export interface Settlement {
   id: string;
@@ -45,7 +95,7 @@ export interface Settlement {
 export interface DBData {
   users: User[];
   transactions: Transaction[];
-  invoices: Invoice[];
+  invoices: InvoiceDocument[];
   settlements: Settlement[];
 }
 
